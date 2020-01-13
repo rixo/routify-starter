@@ -15,6 +15,8 @@ export default {
 		sourcemap: true,
 		name: 'app',
 		format: split ? 'esm' : 'iife',
+		// entryFileNames: 'build/[name]-[hash].js',
+		// chunkFileNames: 'build/[name]-[hash].js',
 		[split ? 'dir' : 'file']: split ? 'public' : 'public/build/bundle.js'
 	},
 	plugins: [
