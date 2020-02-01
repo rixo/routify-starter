@@ -4,10 +4,12 @@ import commonjs from 'rollup-plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import { config } from '@sveltech/routify'
+import hmr, { autoCreate } from 'rollup-plugin-hot'
 
 const split = config.dynamicImports
 const production = !process.env.ROLLUP_WATCH;
 const nollup = !!process.env.NOLLUP;
+const hot = true
 
 export default {
 	input: 'src/main.js',
@@ -61,7 +63,17 @@ export default {
 
 		// If we're building for production (npm run build
 		// instead of npm run dev), minify
-		production && terser()
+		production && terser(),
+
+    hmr({
+      public: 'public',
+      inMemory: true,
+      // This is needed, otherwise Terser (in npm run build) chokes
+      // on import.meta. With this option, the plugin will replace
+      // import.meta.hot in your code with module.hot, and will do
+      // nothing else.
+      compatModuleHot: !hot,
+    }),
 	],
 	watch: {
 		clearScreen: false

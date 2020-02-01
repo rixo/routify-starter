@@ -8,6 +8,7 @@
     "npm-run-all": "^4.1.5",
     "rollup": "^1.12.0",
     "rollup-plugin-commonjs": "^10.0.0",
+    "rollup-plugin-hot": "^0.0.9",
     "rollup-plugin-livereload": "^1.0.0",
     "rollup-plugin-svelte": "^5.0.3",
     "rollup-plugin-svelte-hot": "^0.2.0-0",
@@ -19,7 +20,7 @@
   "scripts": {
     "build": "rollup -c",
     "buildnow": "npm run build && cd public && now --prod",
-    "dev": "run-p watch:routify watch:nollup",
+    "dev": "run-p watch:routify watch:rollup",
     "dev:split": "run-p watch:routify:split watch:nollup",
     "watch:rollup": "rollup -c -w",
     "watch:nollup": "nollup --content-base public --history-api-fallback --hot",
