@@ -3,40 +3,18 @@ import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import livereload from 'rollup-plugin-livereload'
 import { terser } from 'rollup-plugin-terser'
-// import { getConfig } from '@sveltech/routify'
 import copy from 'rollup-plugin-copy'
 import del from 'del'
 import ppidChanged from 'ppid-changed'
 import hmr from 'rollup-plugin-hot'
 import { routify } from '@sveltech/routify'
 
+import { default as config } from './routify.config.js'
+
 const production = !process.env.ROLLUP_WATCH
 const split = !!process.env.SPLIT
 
-// const config = {
-//   "pages": "/home/eric/projects/routify/svench/svench/example/src",
-//   "sourceDir": "public",
-//   "routifyDir": "node_modules/@sveltech/routify/tmp",
-//   "ignore": [],
-//   "dynamicImports": false,
-//   "singleBuild": false,
-//   "noHashScroll": false,
-//   "extensions": [
-//     "svench",
-//     "svench.svx",
-//     "svhx"
-//   ],
-//   "distDir": "dist",
-//   "noPrerender": false,
-//   "watch": "true",
-//   "watchDelay": 20
-// }
-
-const distDir = 'dist'
-const sourceDir = 'public'
-const staticDir = 'static'
-
-// const { distDir, staticDir, sourceDir } = config
+const { distDir, staticDir, sourceDir } = config
 const buildDir = `${distDir}/build`
 const template = staticDir + (split ? '/__dynamic.html' : '/__bundled.html')
 const hot = !production
@@ -100,6 +78,7 @@ export default {
     // https://github.com/rollup/rollup-plugin-commonjs
     resolve({
       browser: true,
+      mainFields: ['svelte', 'browser', 'module', 'main'],
       dedupe: importee =>
         importee === 'svelte' || importee.startsWith('svelte/'),
     }),
@@ -111,7 +90,7 @@ export default {
 
     // Watch the `public` directory and refresh the
     // browser on changes when not in production
-    !production && livereload(distDir),
+    !production && !hot && livereload(distDir),
 
     // If we're building for production (npm run build
     // instead of npm run dev), minify
