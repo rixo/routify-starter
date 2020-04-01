@@ -9,7 +9,7 @@ import ppidChanged from 'ppid-changed'
 import hmr from 'rollup-plugin-hot'
 import { routify } from '@sveltech/routify'
 
-import { default as config } from './routify.config.js'
+import config from './routify.config.js'
 
 const production = !process.env.ROLLUP_WATCH
 const split = !!process.env.SPLIT
@@ -17,7 +17,7 @@ const split = !!process.env.SPLIT
 const { distDir, staticDir, sourceDir } = config
 const buildDir = `${distDir}/build`
 const template = staticDir + (split ? '/__dynamic.html' : '/__bundled.html')
-const hot = !production
+const hot = process.env.HOT != 0 && !production
 
 // Delete the dist folder, but not between build steps
 // ("build": "build-step-1 && build-step-2 && etc")
